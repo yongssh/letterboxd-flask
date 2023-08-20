@@ -104,7 +104,7 @@ def watchlist(friends):
             return "They have no movies in common on their watchlists."
         if len(should_watch) == 1:
             return ', '.join(friends[:-1]) + ", and " + str(friends[-1]) + " should watch " + should_watch[0] + "based on their watchlists' similarities."
-        return ', '.join(friends[:-1]) + ", and " + str(friends[-1]) + " should watch " +  ','.join(should_watch[:-1]) + ", and " + should_watch[-1] + ", based on their watchlists' similarities."
+        return ', '.join(friends[:-1]) + ", and " + str(friends[-1]) + " should watch " +  ', '.join(should_watch[:-1]) + ", and " + should_watch[-1] + ", based on their watchlists' similarities."
  
     if __name__ == "__main__":
         main()
