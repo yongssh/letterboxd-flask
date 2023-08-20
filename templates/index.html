@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>Watchlist Comparison</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <h1>Watchlist App</h1>
+    <form method="POST" action="/">
+        <label for="friends">Enter your username first and then friends' usernames (comma-separated):</label>
+        <input type="text" id="friends" name="friends">
+        <button type="submit">Generate Watchlist</button>
+    </form>
+    <br>
+    {% if results %}
+    <h2>Watchlist Results</h2>
+    <p>{{ results }}</p>
+    {% endif %}
+</body>
+</html>

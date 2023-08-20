@@ -1,0 +1,38 @@
+body {
+    font-family: "garamond";
+    background-color: #bdc1db;
+    font-size: 15px;
+    text-align: center;
+    
+}
+
+h1 {
+    color: #3f3145;
+    font-size: 25px;
+    font-family: "garamond";
+    text-align: center;
+    font-weight: 'bold'
+}
+
+h2 {
+    color: #3f3145;
+    transition: 0.2s ease-in-out;
+    font-size: 15px;
+    font-family: "garamond";
+    text-align: center;
+
+}
+
+button {
+    font-family: "garamond";
+    align-items: center;
+    cursor: pointer;
+}
+
+form {
+    align-items: center;
+    font-family: "garamond";
+}
+
+
+
