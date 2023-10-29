@@ -1,4 +1,4 @@
-# letterboxd-flask
+# Letterboxd Movie Picker 
 
 A web-app made with Flask and Python to webscrape users' Letterboxd watchlists in order to compare large numbers of users' viewing preferences to select movies to watch together. 
 
