@@ -1,4 +1,3 @@
-
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
 from flask import Flask, render_template, request
@@ -9,12 +8,12 @@ import math
 import time 
 
 
-
 def watchlist(friends):
 ### Getting Page Data ###
     def scraping_for_titles(url):  
         
-        driver = webdriver.Chrome()
+        
+        driver = webdriver.Chrome(ChromeDriverManager().install())
         page = driver.get(url)
 
         html = driver.execute_script("return document.body.innerHTML")
@@ -22,7 +21,7 @@ def watchlist(friends):
         #print(soup)
         
         ### Film Num ###
-        raw_num_films = soup.find('h1', attrs={'class': 'section-heading'}).get_text()[:-6]
+        raw_num_films = soup.find(class_="js-watchlist-count").get_text()[:-6]
         num_of_films = int(''.join(i for i in raw_num_films if i.isdigit()))
 
         #print(num_of_films)
@@ -58,14 +57,20 @@ def watchlist(friends):
 
     all_watchlists = []
 
+
     ### Replacing friends' usernames in URL ###
     # replace URL name with each friend's username in turn.
 
     def retrieve_friends(friends):
         for name in friends: 
             friend_url = "https://letterboxd.com/" + name + "/watchlist/"
-            time.sleep(5)
-            all_watchlists.append((scraping_for_titles(friend_url)))
+            time.sleep(1)
+            watchlist = scraping_for_titles(friend_url)
+            if watchlist != None:
+                all_watchlists.append(watchlist)
+            else:
+                print(f"Watchlist for {name} not found.")
+                return None
 
         #print(all_watchlists)
         return all_watchlists
@@ -75,6 +80,7 @@ def watchlist(friends):
     # Add each movie in each playlist to a dictionary. For each repeat occurence, increment by 1. 
     # Initialize new movies with value of 1.
     def top_shared(all_watchlists):
+        print(all_watchlists)
         for watchlist in all_watchlists:
             for title in watchlist:
                 if title not in title_freq: 
@@ -90,6 +96,7 @@ def watchlist(friends):
         for i in sorted_title_freq.keys():
             title_array.append(i)
         return title_array
+    
     def main():
         # Change according to friends' Letterboxd usernames.
         #friends = ["bravefish", "DiCee", "stayjohnson"]
@@ -100,14 +107,32 @@ def watchlist(friends):
         for i in should_watch:
             if i == '':
                 should_watch.remove(i)
+
+        # if less than 3 friends (no comma)
+        if len(friends) < 3:
+            # if no movies in common
+            if len(should_watch) == 0:
+                return "They have no movies in common on their watchlists."
+            # if one movie in common
+            if len(should_watch) == 1:
+                return friends[0] + 'and ' + friends[1] + " should watch " + should_watch[0] + "based on their watchlists' similarities."
+            # if less than 3 movies in common (no comma)
+            if len(should_watch) == 2:
+                return friends[0] + 'and ' + friends[1] + " should watch " + should_watch[0] + "and " + should_watch[1] + "based on their watchlists' similarities."
+            # 3+ movies (comma) 
+            return friends[0] + "and " + friends[1] + " should watch " +  ', '.join(should_watch[:-1]) + ", and " + should_watch[-1] + ", based on their watchlists' similarities."
+
+        # all other cases (3+ friends)
         if len(should_watch) == 0:
             return "They have no movies in common on their watchlists."
         if len(should_watch) == 1:
             return ', '.join(friends[:-1]) + ", and " + str(friends[-1]) + " should watch " + should_watch[0] + "based on their watchlists' similarities."
+        if len(should_watch) == 2:
+            return ', '.join(friends[:-1]) + ", and " + str(friends[-1]) + " should watch " + should_watch[0] + "and " + should_watch[1] + "based on their watchlists' similarities."
         return ', '.join(friends[:-1]) + ", and " + str(friends[-1]) + " should watch " +  ', '.join(should_watch[:-1]) + ", and " + should_watch[-1] + ", based on their watchlists' similarities."
  
     if __name__ == "__main__":
-        main()
+        return main()
     return main()
 
 def get_watchlist_results(friends):
